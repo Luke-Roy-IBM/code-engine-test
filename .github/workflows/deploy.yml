@@ -17,10 +17,10 @@ jobs:
       uses: skywalkeretw/ibm-code-engine-github-action@v1
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
-        region: 'eu-de'
-        project: 'LR-PR-EU-DE'
+        region: 'us-south'
+        project: 'LR-PR-US-SOUTH'
         entity: 'app'
-        name: 'go-app'
+        name: 'go-app-2'
         build-source: './my-app'
   
   func:
@@ -34,9 +34,9 @@ jobs:
         uses: skywalkeretw/ibm-code-engine-github-action@v1
         with:
           api-key: ${{ secrets.IBM_IAM_API_KEY }}
-          region: 'eu-de'
-          project: 'LR-PR-EU-DE'
+          region: 'us-south'
+          project: 'LR-PR-US-SOUTH'
           entity: 'function'
           runtime: python-3.11
-          name: 'py-func'
+          name: 'py-func-2'
           build-source: './my-func'
