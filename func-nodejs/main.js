@@ -1,8 +1,6 @@
 function main(args) {
     const oneLinerJoke = require('one-liner-joke');
-    let getRandomJoke = oneLinerJoke.getRandomJoke({
-        'exclude_tags': ['dirty', 'racist', 'marriage']
-      });
+    let getRandomJoke = oneLinerJoke.getRandomJoke();
 
     return {
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
