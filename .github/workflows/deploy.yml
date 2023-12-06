@@ -22,10 +22,10 @@ jobs:
         with:
           api-key: ${{ secrets.IBM_IAM_API_KEY }}
           resource-group: 'Default'
-          region: 'eu-de'
-          project: 'LR-PR-EU-DE'
+          region: 'eu-gb'
+          project: 'LR-PR-EU-GB'
           entity: 'app'
-          name: 'my-app'
+          name: 'go-app'
           build-source: './app'
 
   test-deploy-function:
@@ -47,8 +47,8 @@ jobs:
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
         resource-group: 'Default'
-        region: 'eu-de'
-        project: 'MY-PROJECT'
+        region: 'eu-gb'
+        project: 'LR-PR-EU-GB'
         entity: 'fn'
         runtime: nodejs-18 
         name: 'my-js-fn'
