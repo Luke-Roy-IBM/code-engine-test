@@ -1,42 +1,57 @@
-name: Depoly to Code Engine
+name: Test and Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
 
 jobs:
+  
+  deploy-app:
+ 
+    runs-on: ubuntu-latest
 
-  app:
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: Deploy Application to Code Engine
+        uses: skywalkeretw/ibm-code-engine-github-action@v1
+        with:
+          api-key: ${{ secrets.IBM_IAM_API_KEY }}
+          resource-group: 'Default'
+          region: 'eu-de'
+          project: 'LR-PR-EU-DE'
+          entity: 'app'
+          name: 'my-app'
+          build-source: './app'
+
+  test-deploy-function:
+
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
       uses: actions/checkout@v3
 
-    - name: Deploy Application to Code Engine
+    
+    - name: Run test
+      uses: skywalkeretw/ibm-code-engine-function-test-github-action@v1
+      with:
+        runtime: nodejs-18
+        source-dir: func-nodejs
+
+    - name: Deploy JavaScript Function to Code Engine
       uses: skywalkeretw/ibm-code-engine-github-action@v1
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
-        region: 'us-south'
-        project: 'LR-PR-US-SOUTH'
-        entity: 'app'
-        name: 'go-app-2'
-        build-source: './my-app'
-  
-  func:
-      runs-on: ubuntu-latest
-      
-      steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-        
-      - name: Deploy Function to Code Engine
-        uses: skywalkeretw/ibm-code-engine-github-action@v1
-        with:
-          api-key: ${{ secrets.IBM_IAM_API_KEY }}
-          region: 'us-south'
-          project: 'LR-PR-US-SOUTH'
-          entity: 'function'
-          runtime: python-3.11
-          name: 'py-func-2'
-          build-source: './my-func'
+        resource-group: 'Default'
+        region: 'eu-de'
+        project: 'MY-PROJECT'
+        entity: 'fn'
+        runtime: nodejs-18 
+        name: 'my-js-fn'
+        build-source: './func-nodejs'
+
+
