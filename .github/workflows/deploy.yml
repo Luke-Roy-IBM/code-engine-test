@@ -20,8 +20,8 @@ jobs:
         with:
           api-key: ${{ secrets.IBM_IAM_API_KEY }}
           resource-group: 'Default'
-          region: 'eu-gb'
-          project: 'LR-PR-EU-GB'
+          region: 'eu-de'
+          project: 'LR-DEMO'
           entity: 'app'
           name: 'go-app'
           build-source: './app'
@@ -45,8 +45,8 @@ jobs:
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
         resource-group: 'Default'
-        region: 'eu-gb'
-        project: 'LR-PR-EU-GB'
+        region: 'eu-de'
+        project: 'LR-DEMO'
         entity: 'fn'
         runtime: nodejs-18 
         name: 'my-js-fn'
