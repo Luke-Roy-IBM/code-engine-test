@@ -12,7 +12,7 @@ describe('main function', () => {
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
       body: {"joke": getRandomJoke, "test": true}
    }
-
+   console.log(result)
     expect(result.body.test).to.deep.equal(true);
   });
 });
