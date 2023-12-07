@@ -23,7 +23,7 @@ jobs:
           region: 'au-syd'
           project: 'LR-PLAYBACK'
           entity: 'app'
-          name: 'go-app'
+          name: 'hello'
           build-source: './app'
 
   test-deploy-function:
@@ -48,8 +48,8 @@ jobs:
         region: 'au-syd'
         project: 'LR-PLAYBACK'
         entity: 'fn'
-        runtime: nodejs-18 
-        name: 'my-js-fn'
+        runtime: 'nodejs-18'
+        name: 'pb-func'
         build-source: './func-nodejs'
 
 
