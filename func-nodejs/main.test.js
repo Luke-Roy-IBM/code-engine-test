@@ -10,7 +10,7 @@ describe('main function', () => {
 
     const expected = {
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
-      body: '<html><body><h3>Hello, Functions on CodeEngine!</h3></body></html>'
+      body: '<html><body><h3>Hello, Functions on CodeEngine Playback!</h3></body></html>'
     };
 
     expect(result).to.deep.equal(expected);
