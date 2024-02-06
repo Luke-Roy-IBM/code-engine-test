@@ -22,8 +22,8 @@ jobs:
           region: 'ca-tor'
           project: 'LR-PR-CA-TOR'
           component: 'app'
-          name: 'hello'
-          build-source: './app'
+          name: 'my-ce-app'
+          build-source: './my-ce-app'
 
 
 
