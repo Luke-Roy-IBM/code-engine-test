@@ -21,7 +21,7 @@ jobs:
           api-key: ${{ secrets.IBM_IAM_API_KEY }}
           region: 'ca-tor'
           project: 'LR-PR-CA-TOR'
-          entity: 'app'
+          component: 'app'
           name: 'hello'
           build-source: './app'
 
