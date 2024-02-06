@@ -22,6 +22,7 @@ jobs:
           region: 'ca-tor'
           project: 'LR-PR-CA-TOR'
           component: 'fn'
+          runtime: python-3.11
           name: 'my-ce-py-func'
           build-source: './my-ce-py-func'
 
