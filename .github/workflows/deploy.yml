@@ -21,9 +21,9 @@ jobs:
           api-key: ${{ secrets.IBM_IAM_API_KEY }}
           region: 'ca-tor'
           project: 'LR-PR-CA-TOR'
-          component: 'app'
-          name: 'my-ce-app'
-          build-source: './my-ce-app'
+          component: 'fn'
+          name: 'my-ce-py-func'
+          build-source: './my-ce-py-func'
 
 
 
