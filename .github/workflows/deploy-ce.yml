@@ -30,7 +30,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Deploy Python Function to Code Engine
-      uses: ibm/code-engine-github-action@v1
+      uses: ./.github/actions/ce-action
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
         region: 'eu-de'
