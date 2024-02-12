@@ -1,0 +1,41 @@
+name: Deploy App to Code Engine
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  app:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Deploy Application to Code Engine
+      uses: ./.github/actions/ce-action
+      with:
+        api-key: ${{ secrets.IBM_IAM_API_KEY }}
+        region: 'eu-de'
+        project: 'MY-PROJECT'
+        component: 'app'
+        name: 'my-ce-app'
+        build-source: './my-ce-app'
+
+  fn-py:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Deploy Python Function to Code Engine
+      uses: ./.github/actions/ce-action
+      with:
+        api-key: ${{ secrets.IBM_IAM_API_KEY }}
+        region: 'eu-de'
+        project: 'MY-PROJECT'
+        component: 'fn'
+        runtime: python-3.11
+        name: 'my-ce-py-fn'
+        build-source: './my-ce-py-func'
