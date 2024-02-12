@@ -14,13 +14,13 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Deploy Application to Code Engine
-      uses: ./.github/actions/ce-action
+      uses: IBM/code-engine-github-action@v1
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
-        region: 'eu-de'
-        project: 'MY-PROJECT'
+        region: 'ca-tor'
+        project: 'LR-PR-CA-TOR'
         component: 'app'
-        name: 'my-ce-app'
+        name: 'lr-my-ce-app'
         build-source: './my-ce-app'
 
   fn-py:
@@ -30,12 +30,12 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Deploy Python Function to Code Engine
-      uses: ./.github/actions/ce-action
+      uses: IBM/code-engine-github-action@v1
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
-        region: 'eu-de'
-        project: 'MY-PROJECT'
+        region: 'ca-tor'
+        project: 'LR-PR-CA-TOR'
         component: 'fn'
         runtime: python-3.11
-        name: 'my-ce-py-fn'
+        name: 'lr-my-ce-py-fn'
         build-source: './my-ce-py-func'
