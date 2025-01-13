@@ -39,7 +39,7 @@ jobs:
         runtime: python-3.11
         name: 'lr-my-ce-py-fn'
         build-source: './my-ce-py-func'
-  
+
   deploy-cron:
     runs-on: ubuntu-latest
     - name: Check out code
