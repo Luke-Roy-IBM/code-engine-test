@@ -181,9 +181,9 @@ runs:
       if:  ( inputs.component == 'subscription' || inputs.component == 'sub' ) && inputs.subscription-type == 'cron'
       run: |
         if ibmcloud ce sub cron get --name ${{ inputs.name }} ; then
-          ibmcloud ce sub cron update --name ${{ inputs.name }} --destination-type ${{ inputs.destination-type }} --destination ${{ inputs.destination }} --path ${{ inputs.path }} --extension ${{ inputs.extension }} --schedule ${{ inputs.schedule }} --wait
+          ibmcloud ce sub cron update --name ${{ inputs.name }} --destination-type ${{ inputs.destination-type }} --destination ${{ inputs.destination }} --path ${{ inputs.path }} --extension ${{ inputs.extension }} --schedule "${{ inputs.schedule }}" --wait
         else
-          ibmcloud ce sub cron create --name ${{ inputs.name }} --destination-type ${{ inputs.destination-type }} --destination ${{ inputs.destination }} --path ${{ inputs.path }} --extension ${{ inputs.extension }} --schedule ${{ inputs.schedule }} --wait 
+          ibmcloud ce sub cron create --name ${{ inputs.name }} --destination-type ${{ inputs.destination-type }} --destination ${{ inputs.destination }} --path ${{ inputs.path }} --extension ${{ inputs.extension }} --schedule "${{ inputs.schedule }}" --wait 
         fi
 
     - name: Get component
