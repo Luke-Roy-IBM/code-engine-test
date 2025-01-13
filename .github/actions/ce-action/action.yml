@@ -23,33 +23,63 @@ inputs:
     description: A Code Engine Project Is the grouping of your Apps, Functions and Jobs
     required: true
 
-# App, Function or Job Specific inputs
+# App, Function, Job or Subscription Specific inputs
   component:
-    description: The type of component that should be deployed [App, Function, Job]
+    description: The type of component that should be deployed [App, Function, Job, Subscription]
     required: true
 
-  name: 
+  subscription-type:
+    description: The type of subscription that should be deployed [cos, cron, kafka]. WARNING Currently only [cron] is supported
+    required: false
+
+  name:
     description: Name of the App, Function or Job
     required: true
-  
+
   runtime:
     description: Runtime used for the Function only required for function
     required: false
 
+  destination-type:
+    description: Destination type used for the Subscription only required for subscription [app, function, job]. The default value is app.
+    required: false
+    default: app
+
+  destination:
+    description: Destination used for the Subscription only required for subscription
+    required: false
+
+  path:
+    description: Path used for the Subscription. For example, /events
+    required: false
+
+  extension:
+    description: Extension used for the Subscription. Set CloudEvents extensions to send to the destination. Must be in 'NAME=VALUE' format. This action adds a new CloudEvents extension or overrides an existing CloudEvent attribute. Specify one extension per --extension option; for example, --ext extA=A --ext extB=B.
+    required: false
+
+  schedule:
+    description: Schedule used for the Subscription. For example, specify '*/2 * * * *' (in string format) for every two minutes
+    required: false
+
   build-source:
-    description: path to the directory containing the source code 
+    description: path to the directory containing the source code
     required: false
     default: .
 
+  build-size:
+    description: The size to use for the build, which determines the amount of resources used. Valid values include small, medium, large, xlarge, and xxlarge.
+    required: false
+    default: medium
+
   cpu:
-    description: CPU configuration set for the component. If not set default Code Engine values are used. 
+    description: CPU configuration set for the component. If not set default Code Engine values are used.
     required: false
 
   memory:
     description: Memory configuration set for the component. If not set default Code Engine values are used.
     required: false
 
-# actual action code 
+# actual action code
 runs:
   using: composite
 
@@ -63,7 +93,7 @@ runs:
       shell: bash
       run: |
         ibmcloud login --apikey ${{ inputs.api-key }} -r ${{ inputs.region }}
-        
+
     - name: Set Resource Group
       shell: bash
       run: |
@@ -81,7 +111,7 @@ runs:
     # If the project doesn`t exist the project is created with the provided Name
     - name: Select Code Engine Project
       shell: bash
-      run: | 
+      run: |
         if ibmcloud ce project select --name "${{ inputs.project }}" || ibmcloud ce project select --id ${{ inputs.project }} ; then
           echo "Project Selected"
         else
@@ -99,7 +129,7 @@ runs:
         else
           echo "cpu=" >> "$GITHUB_OUTPUT"
         fi
-        
+
         # set the memory value
         if [[ "${{ inputs.memory }}" != "" ]] ; then
           echo "memory=--memory ${{ inputs.memory }}" >> "$GITHUB_OUTPUT"
@@ -111,7 +141,7 @@ runs:
     - name: Create or Update Functions
       shell: bash
       id: fn-create
-      if: ( inputs.component == 'function' || inputs.component == 'func' || inputs.component == 'fn' ) 
+      if: ( inputs.component == 'function' || inputs.component == 'func' || inputs.component == 'fn' )
       run: |
 
         if ibmcloud ce fn get --name ${{ inputs.name }} ; then
@@ -124,29 +154,39 @@ runs:
     - name: Create or Update Application
       shell: bash
       id: create-app
-      if: ( inputs.component == 'application' || inputs.component == 'app' ) 
+      if: ( inputs.component == 'application' || inputs.component == 'app' )
       run: |
-
         if ibmcloud ce application get --name ${{ inputs.name }} ; then
-          ibmcloud ce application update --name ${{ inputs.name }} --build-source ${{ inputs.build-source }} ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
+          ibmcloud ce application update --name ${{ inputs.name }} --build-source ${{ inputs.build-source }} --build-size ${{ inputs.build-size }} ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
         else
-          ibmcloud ce application create --name ${{ inputs.name }} --build-source ${{ inputs.build-source }} ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
+          ibmcloud ce application create --name ${{ inputs.name }} --build-source ${{ inputs.build-source }} --build-size ${{ inputs.build-size }} ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
         fi
 
     # Job Steps
     - name: Create or Update Job
       shell: bash
       id: create-job
-      if: inputs.component == 'job' 
+      if: inputs.component == 'job'
       run: |
-
         if ibmcloud ce job get --name ${{ inputs.name }} ; then
-          ibmcloud ce job update --name ${{ inputs.name }} --build-source ${{ inputs.build-source }} --wait ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
+          ibmcloud ce job update --name ${{ inputs.name }} --build-source ${{ inputs.build-source }} --build-size ${{ inputs.build-size }} --wait ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
         else
-          ibmcloud ce job create --name ${{ inputs.name }} --build-source ${{ inputs.build-source }} --wait ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
+          ibmcloud ce job create --name ${{ inputs.name }} --build-source ${{ inputs.build-source }} --build-size ${{ inputs.build-size }} --wait ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
         fi
-    
-    - name: Get component 
+
+    # Subscription Steps
+    - name: Create or Update Subscription cron
+      shell: bash
+      id: create-sub-cron
+      if:  ( inputs.component == 'subscription' || inputs.component == 'sub' ) && inputs.subscription-type == 'cron'
+      run: |
+        if ibmcloud ce sub cron get --name ${{ inputs.name }} ; then
+          ibmcloud ce sub cron update --name ${{ inputs.name }} --destination-type ${{ inputs.destination-type }} --destination ${{ inputs.destination }} --path ${{ inputs.path }} --extension ${{ inputs.extension }} --schedule ${{ inputs.schedule }} --wait
+        else
+          ibmcloud ce sub cron create --name ${{ inputs.name }} --destination-type ${{ inputs.destination-type }} --destination ${{ inputs.destination }} --path ${{ inputs.path }} --extension ${{ inputs.extension }} --schedule ${{ inputs.schedule }} --wait 
+        fi
+
+    - name: Get component
       shell: bash
       if: steps.fn-create.outcome == 'success' || steps.app-create.outcome == 'success' || steps.job-create.outcome == 'success'
       run: |
