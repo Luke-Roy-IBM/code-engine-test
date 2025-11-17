@@ -94,7 +94,7 @@ runs:
         if ibmcloud ce project select --name "${{ inputs.project }}" || ibmcloud ce project select --id ${{ inputs.project }} ; then
           echo "Project Selected"
         else
-          ibmcloud ce project create --name "${{ inputs.project }}"
+          ibmcloud ce project create --name "${{ inputs.project }}" --wait
         fi
 
     # set resources for target
@@ -120,8 +120,8 @@ runs:
       id: conf-build-img
       shell: bash
       run: |
-        if [[ "${{ inputs.immage }}" != "" ]] ; then
-          echo "build-img=--image ${{ inputs.immage }}" >> "$GITHUB_OUTPUT"
+        if [[ "${{ inputs.image }}" != "" ]] ; then
+          echo "build-img=--image ${{ inputs.image }}" >> "$GITHUB_OUTPUT"
         else 
           echo "build-img=--build-source ${{ inputs.build-source }} --build-size ${{ inputs.build-size }}" >> "$GITHUB_OUTPUT"
         fi
