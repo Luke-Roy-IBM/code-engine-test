@@ -23,6 +23,23 @@ jobs:
         name: 'lr-my-ce-app'
         build-source: './my-ce-app'
 
+  app-hello:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Deploy Application to Code Engine
+      uses: ./.github/actions/ce-action
+      with:
+        api-key: ${{ secrets.IBM_IAM_API_KEY }}
+        region: 'ca-tor'
+        project: 'LR-PR-CA-TOR'
+        component: 'app'
+        name: 'lr-my-ce-app-hello'
+        image: icr.io/codeengine/helloworld
+
+
   fn-py:
     runs-on: ubuntu-latest
     steps:
@@ -40,24 +57,24 @@ jobs:
         name: 'lr-my-ce-py-fn'
         build-source: './my-ce-py-func'
 
-  deploy-cron:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v3
+  # deploy-cron:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Check out code
+  #     uses: actions/checkout@v3
 
-    - name: Deploy Cron Subscription to Code Engine
-      uses: ./.github/actions/ce-action
-      with:
-        api-key: ${{ secrets.IBM_IAM_API_KEY }}
-        resource-group: 'Default'
-        region: 'ca-tor'
-        project: 'LR-PR-CA-TOR'
-        component: 'sub'
-        subscription-type: 'cron'
-        destination-type: 'app'
-        destination: 'cron-app'
-        path: '/events'
-        extension: 'extA=A'
-        schedule: '*/3 * * * *'
-        name: 'my-cron-sub'
+  #   - name: Deploy Cron Subscription to Code Engine
+  #     uses: ./.github/actions/ce-action
+  #     with:
+  #       api-key: ${{ secrets.IBM_IAM_API_KEY }}
+  #       resource-group: 'Default'
+  #       region: 'ca-tor'
+  #       project: 'LR-PR-CA-TOR'
+  #       component: 'sub'
+  #       subscription-type: 'cron'
+  #       destination-type: 'app'
+  #       destination: 'cron-app'
+  #       path: '/events'
+  #       extension: 'extA=A'
+  #       schedule: '*/3 * * * *'
+  #       name: 'my-cron-sub'
