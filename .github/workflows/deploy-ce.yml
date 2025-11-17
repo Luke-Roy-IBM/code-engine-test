@@ -18,7 +18,7 @@ jobs:
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
         region: 'ca-tor'
-        project: 'LR-PR-CA-TOR'
+        project: 'gh-action-test-proj'
         component: 'app'
         name: 'lr-my-ce-app'
         build-source: './my-ce-app'
@@ -34,7 +34,7 @@ jobs:
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
         region: 'ca-tor'
-        project: 'LR-PR-CA-TOR'
+        project: 'gh-action-test-proj'
         component: 'app'
         name: 'lr-my-ce-app-hello'
         image: icr.io/codeengine/helloworld
@@ -51,7 +51,7 @@ jobs:
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
         region: 'ca-tor'
-        project: 'LR-PR-CA-TOR'
+        project: 'gh-action-test-proj'
         component: 'fn'
         runtime: python-3.11
         name: 'lr-my-ce-py-fn'
@@ -69,7 +69,7 @@ jobs:
   #       api-key: ${{ secrets.IBM_IAM_API_KEY }}
   #       resource-group: 'Default'
   #       region: 'ca-tor'
-  #       project: 'LR-PR-CA-TOR'
+  #       project: 'gh-action-test-proj'
   #       component: 'sub'
   #       subscription-type: 'cron'
   #       destination-type: 'app'
