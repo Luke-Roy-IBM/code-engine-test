@@ -186,11 +186,15 @@ runs:
       shell: bash
       id: create-app
       if: ( inputs.component == 'application' || inputs.component == 'app' )
+      env:
+        NAME: ${{ inputs.name }}
+        CPU-MEMORY: ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
+        CONF-BUILD-IMG: ${{ steps.conf-build-img.outputs.build-img }}
       run: |
-        if ibmcloud ce application get --name ${{ inputs.name }} ; then
-          ibmcloud ce application update --name ${{ inputs.name }} ${{ steps.conf-build-img.outputs.build-img }} ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
+        if ibmcloud ce application get --name ${NAME} ; then
+          ibmcloud ce application update --name ${NAME} ${CONF-BUILD-IMG} ${CPU-MEMORY} 
         else
-          ibmcloud ce application create --name ${{ inputs.name }} ${{ steps.conf-build-img.outputs.build-img }} ${{ steps.set-resources.outputs.cpu }} ${{ steps.set-resources.outputs.memory }}
+          ibmcloud ce application create --name ${NAME} ${CONF-BUILD-IMG} ${CPU-MEMORY}
         fi
 
     # Job Steps
