@@ -155,7 +155,7 @@ runs:
     # Build Steps
     - name: Create or Update build
       shell: bash
-      id: create-app
+      id: create-build
       if: ( inputs.component == 'build')
       run: |
         if [[ "${{ inputs.image }}" == "" ]] ; then 
