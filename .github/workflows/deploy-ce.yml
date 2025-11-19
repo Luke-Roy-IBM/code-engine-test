@@ -53,7 +53,7 @@ jobs:
         project: 'gh-action-test-proj'
         component: 'build'
         name: 'gh-build'
-        image: ca.icr.io/gh-a-lr/hello-node:latest
+        image: private.ca.icr.io/gh-a-lr/hello-node:latest
         build-source: './my-ce-app'
 
 
