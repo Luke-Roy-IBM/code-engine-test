@@ -39,6 +39,23 @@ jobs:
         name: 'lr-my-ce-app-hello'
         image: icr.io/codeengine/helloworld
 
+  build-container:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Deploy Application to Code Engine
+      uses: ./.github/actions/ce-action
+      with:
+        api-key: ${{ secrets.IBM_IAM_API_KEY }}
+        region: 'ca-tor'
+        project: 'gh-action-test-proj'
+        component: 'build'
+        name: 'gh-build'
+        image: icr.io/codeengine/helloworld
+        build-source: './my-ce-app'
+
 
   fn-py:
     runs-on: ubuntu-latest
