@@ -166,10 +166,12 @@ runs:
         if ibmcloud ce buildrun get --name ${{ inputs.name }}-$(date +"%Y%m%d%H%M%S") ; then
           echo "buildrun already exists"
         else
+          registry-secret="${{ inputs.registry-secret }}"
           if [[ "${{ inputs.registry-secret }}" == "" ]] ; then 
             echo "using default secret for current region: ce-auto-icr-private-${{ inputs.region }}"
+            registry-secret="ce-auto-icr-private-${{ inputs.region }}"
           fi
-          ibmcloud ce buildrun submit --name ${{ inputs.name }}-$(date +"%Y%m%d%H%M%S") --source  ${{ inputs.build-source }} --strategy ${{ inputs.build-strategy }} --image ${{ inputs.image }} --registry-secret ${${{ inputs.registry-secret }}:-$(echo "ce-auto-icr-private-${{ inputs.region }}")}  --size  ${{ inputs.build-size }} --wait 
+          ibmcloud ce buildrun submit --name ${{ inputs.name }}-$(date +"%Y%m%d%H%M%S") --source  ${{ inputs.build-source }} --strategy ${{ inputs.build-strategy }} --image ${{ inputs.image }} --registry-secret $registry-secret  --size  ${{ inputs.build-size }} --wait 
         fi
 
     # Application Steps
