@@ -157,21 +157,28 @@ runs:
       shell: bash
       id: create-build
       if: ( inputs.component == 'build')
+      env:
+        NAME: ${{ inputs.name }}
+        IMAGE: ${{ inputs.image }}
+        REGION: ${{ inputs.region }}
+        REGISTRY_SECRET: ${{ inputs.registry-secret }}
+        BUILD_SOURCE: ${{ inputs.build-source }}
+        BUILD_STRATEGY: ${{ inputs.build-strategy }}
+        BUILD_SIZE: ${{ inputs.build-size }}
       run: |
-        if [[ "${{ inputs.image }}" == "" ]] ; then 
+        if [[ "${IMAGE}" == "" ]] ; then 
           echo "image needs to be set for build"
           exit 1
         fi
-
-        if ibmcloud ce buildrun get --name ${{ inputs.name }}-$(date +"%Y%m%d%H%M%S") ; then
+        NAME=${NAME}-$(date +"%Y%m%d%H%M%S")
+        if ibmcloud ce buildrun get --name ${NAME} ; then
           echo "buildrun already exists"
         else
-          registry-secret="${{ inputs.registry-secret }}"
-          if [[ "${{ inputs.registry-secret }}" == "" ]] ; then 
-            echo "using default secret for current region: ce-auto-icr-private-${{ inputs.region }}"
-            registry-secret="ce-auto-icr-private-${{ inputs.region }}"
+          if [[ "${REGISTRY_SECRET}" == "" ]] ; then 
+            echo "using default secret for current region: ce-auto-icr-private-${REGION}"
+            REGISTRY_SECRET="ce-auto-icr-private-${REGION}"
           fi
-          ibmcloud ce buildrun submit --name ${{ inputs.name }}-$(date +"%Y%m%d%H%M%S") --source  ${{ inputs.build-source }} --strategy ${{ inputs.build-strategy }} --image ${{ inputs.image }} --registry-secret $registry-secret  --size  ${{ inputs.build-size }} --wait 
+          ibmcloud ce buildrun submit --name ${NAME} --source  ${BUILD_SOURCE} --strategy ${BUILD_STRATEGY} --image ${IMAGE} --registry-secret ${REGISTRY_SECRET}  --size ${BUILD_SIZE} --wait 
         fi
 
     # Application Steps
