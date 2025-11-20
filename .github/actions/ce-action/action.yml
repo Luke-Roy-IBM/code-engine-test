@@ -76,7 +76,7 @@ runs:
     - name: Install IBM Cloud CLI
       uses: IBM/actions-ibmcloud-cli@v1
       with:
-        api-key: ${{ inputs.api-key }}
+        api_key: ${{ inputs.api-key }}
         region: ${{ inputs.region }}
         group: ${{ inputs.resource-group }}
         plugins: code-engine
