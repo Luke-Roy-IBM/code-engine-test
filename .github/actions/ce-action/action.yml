@@ -213,7 +213,8 @@ runs:
           fi
           ibmcloud ce buildrun submit --name ${NAME} --source  ${BUILD_SOURCE} --strategy ${BUILD_STRATEGY} --image ${IMAGE} --registry-secret ${REGISTRY_SECRET}  --size ${BUILD_SIZE} --wait 
         fi
-        ibmcloud ce buildrun get --name ${NAME}
+        BUILDRUNDATA=$(ibmcloud ce buildrun get --name ${NAME} --output json)
+        echo "Output image with digest: $(echo ${BUILDRUNDATA} | jq -r '.output_image' )@$(echo ${BUILDRUNDATA} | jq -r '.status_details.output_digest')" 
 
     # Application Steps
     - name: Create or Update Application
