@@ -232,7 +232,8 @@ runs:
         if [[ "${PORT}" != "" ]] ; then
           PORTFLAG="--port ${PORT}"
         fi
-        if ibmcloud ce application get --name ${NAME} >/dev/null 2>&1; then
+        echo "... --name ${NAME} ${CONFBUILDIMG} ${PORTFLAG} ${TRUSTED-PROFILES} ${CPU} ${MEMORY}""
+        if ibmcloud ce application get --name ${NAME} ; then
           ibmcloud ce application update --name ${NAME} ${CONFBUILDIMG} ${PORTFLAG} ${TRUSTED-PROFILES} ${CPU} ${MEMORY}
         else
           ibmcloud ce application create --name ${NAME} ${CONFBUILDIMG} ${PORTFLAG} ${TRUSTED-PROFILES} ${CPU} ${MEMORY}
