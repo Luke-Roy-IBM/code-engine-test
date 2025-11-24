@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
-      uses: actions/checkout@v3
+      uses: ./.github/actions/ce-action
 
     - name: Deploy App to Code Engine using Dockerfile build-strategy
       uses: IBM/code-engine-github-action@v1
