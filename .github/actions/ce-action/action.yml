@@ -213,6 +213,7 @@ runs:
           fi
           ibmcloud ce buildrun submit --name ${NAME} --source  ${BUILD_SOURCE} --strategy ${BUILD_STRATEGY} --image ${IMAGE} --registry-secret ${REGISTRY_SECRET}  --size ${BUILD_SIZE} --wait 
         fi
+        ibmcloud ce buildrun get --name ${NAME}
 
     # Application Steps
     - name: Create or Update Application
@@ -232,7 +233,6 @@ runs:
         if [[ "${PORT}" != "" ]] ; then
           PORTFLAG="--port ${PORT}"
         fi
-        echo "... --name ${NAME} ${CONFBUILDIMG} ${PORTFLAG} ${TRUSTED-PROFILES} ${CPU} ${MEMORY}"
         if ibmcloud ce application get --name ${NAME} ; then
           ibmcloud ce application update --name ${NAME} ${CONFBUILDIMG} ${PORTFLAG} ${TRUSTED_PROFILES} ${CPU} ${MEMORY}
         else

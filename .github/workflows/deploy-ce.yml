@@ -1,0 +1,97 @@
+name: Deploy App to Code Engine
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  app:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Deploy Application to Code Engine
+      uses: ./.github/actions/ce-action
+      with:
+        api-key: ${{ secrets.IBM_IAM_API_KEY }}
+        region: 'ca-tor'
+        project: 'gh-action-test-proj'
+        component: 'app'
+        name: 'lr-my-ce-app'
+        build-source: './my-ce-app'
+
+  app-hello:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Deploy Application to Code Engine
+      uses: ./.github/actions/ce-action
+      with:
+        api-key: ${{ secrets.IBM_IAM_API_KEY }}
+        region: 'ca-tor'
+        project: 'gh-action-test-proj'
+        component: 'app'
+        name: 'lr-my-ce-app-hello'
+        image: icr.io/codeengine/helloworld
+
+  build-container:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: BUild Container on Code Engine
+      uses: ./.github/actions/ce-action
+      with:
+        api-key: ${{ secrets.IBM_IAM_API_KEY }}
+        region: 'ca-tor'
+        project: 'gh-action-test-proj'
+        component: 'build'
+        name: 'gh-build'
+        image: private.ca.icr.io/gh-a-lr/hello-node:latest
+        build-source: './my-ce-app'
+
+
+  fn-py:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Deploy Python Function to Code Engine
+      uses: ./.github/actions/ce-action
+      with:
+        api-key: ${{ secrets.IBM_IAM_API_KEY }}
+        region: 'ca-tor'
+        project: 'gh-action-test-proj'
+        component: 'fn'
+        runtime: python-3.11
+        name: 'lr-my-ce-py-fn'
+        build-source: './my-ce-py-func'
+
+  # deploy-cron:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Check out code
+  #     uses: actions/checkout@v3
+
+  #   - name: Deploy Cron Subscription to Code Engine
+  #     uses: ./.github/actions/ce-action
+  #     with:
+  #       api-key: ${{ secrets.IBM_IAM_API_KEY }}
+  #       resource-group: 'Default'
+  #       region: 'ca-tor'
+  #       project: 'gh-action-test-proj'
+  #       component: 'sub'
+  #       subscription-type: 'cron'
+  #       destination-type: 'app'
+  #       destination: 'cron-app'
+  #       path: '/events'
+  #       extension: 'extA=A'
+  #       schedule: '*/3 * * * *'
+  #       name: 'my-cron-sub'
