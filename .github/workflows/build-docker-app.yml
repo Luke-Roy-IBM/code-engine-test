@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
-      uses: ./.github/actions/ce-action
+      uses: actions/checkout@v3
 
     - name: Deploy App to Code Engine using Dockerfile build-strategy
-      uses: IBM/code-engine-github-action@v1
+      uses: ./.github/actions/ce-action
       with:
         api-key: ${{ secrets.IBM_IAM_API_KEY }}
         resource-group: 'Default'
