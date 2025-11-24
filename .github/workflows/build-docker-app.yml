@@ -22,9 +22,9 @@ jobs:
         region: 'ca-tor'
         project: 'gh-action-test-proj'
         component: 'app'
-        build-strategy: dockerfile
+        build-strategy: 'dockerfile'
         port: 3000
         name: 'my-docker-app'
-        build-source: ‘./my-docker-app
+        build-source: './my-docker-app'
         cpu: 1
         memory: 4G
