@@ -23,6 +23,6 @@ jobs:
         project: 'gh-action-test-proj'
         component: 'app'
         name: 'my-img-app'
-        image: icr.io/codeengine/helloworld:latest
+        image: 'icr.io/codeengine/helloworld:latest'
         cpu: 1
         memory: 4G
