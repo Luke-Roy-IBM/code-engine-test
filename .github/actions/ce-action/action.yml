@@ -180,7 +180,7 @@ runs:
       run: |
 
         if ibmcloud ce fn get --name ${NAME} ; then
-          ibmcloud ce fn update --name ${NAME} --runtime ${RUNTIME} --build-source ${BUILD_SOURCE} ${${TRUSTED_PROFILES}} ${CPU} ${MEMORY}
+          ibmcloud ce fn update --name ${NAME} --runtime ${RUNTIME} --build-source ${BUILD_SOURCE} ${TRUSTED_PROFILES} ${CPU} ${MEMORY}
         else
           ibmcloud ce fn create --name ${NAME} --runtime ${RUNTIME} --build-source ${BUILD_SOURCE} ${TRUSTED_PROFILES} ${CPU} ${MEMORY}
         fi
@@ -215,7 +215,7 @@ runs:
         fi
         BUILDRUNDATA=$(ibmcloud ce buildrun get --name ${NAME} --output json)
         IMAGE_WITH_DIGEST="$(echo ${BUILDRUNDATA} | jq -r '.output_image')@$(echo ${BUILDRUNDATA} | jq -r '.status_details.output_digest')"
-        echo "Output image with digest: ${IMAGE_WITH_DIGEST}""
+        echo "Output image with digest: ${IMAGE_WITH_DIGEST}"
         echo "image-with-digest=${IMAGE_WITH_DIGEST}" >> $GITHUB_OUTPUT 
 
     # Application Steps
