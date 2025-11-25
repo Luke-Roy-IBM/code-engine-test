@@ -77,7 +77,7 @@ inputs:
     required: false
 outputs:  
   image-with-digest:    
-  description: "The built image with digest"
+    description: "The built image with digest"
 # actual action code
 runs:
   using: composite
